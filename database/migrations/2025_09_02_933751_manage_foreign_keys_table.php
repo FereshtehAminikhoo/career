@@ -46,6 +46,13 @@ return new class extends Migration
                 ->on('resume_storages')
                 ->onDelete('cascade');
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('user_type_id')
+                ->references('id')
+                ->on('user_types')
+                ->onDelete('cascade');
+        });
     }
 
     /**
