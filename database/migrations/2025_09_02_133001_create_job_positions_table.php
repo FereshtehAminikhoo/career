@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('job_positions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->boolean('is_open')->default(true);
             $table->longText('description')->nullable();

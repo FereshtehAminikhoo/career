@@ -16,6 +16,11 @@ return new class extends Migration
                 ->references('id')
                 ->on('job_categories')
                 ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
 
         Schema::table('resume_storages', function (Blueprint $table) {
