@@ -20,7 +20,7 @@ class UserTypeSeeder extends Seeder
         ];
 
         foreach ($user_types as $user_type) {
-            DB::table('statuses')->updateOrInsert(
+            DB::table('user_types')->updateOrInsert(
                 ["name" => $user_type],
                 ["created_at" => now(), "updated_at" => now()],
             );
