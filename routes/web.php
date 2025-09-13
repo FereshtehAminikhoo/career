@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\JobPositionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('main');
+Route::controller(JobPositionController::class)->group(function () {
+    Route::get('/', "show")->name("job-position.show");
+    Route::get('/detail', "show_detail")->name("job-position.detail");
 });
+
 
 
 Route::get('/job-detail', function () {
