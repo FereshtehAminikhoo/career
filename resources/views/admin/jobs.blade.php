@@ -11,7 +11,7 @@
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <h2 class="text-xl font-bold text-gray-800">مدیریت آگهی‌ها</h2>
-                        <a href="{{ route('admin.post-job') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center">
+                        <a href="{{ route('panel.advertisement.create') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center">
                             <i class="fas fa-plus ml-2"></i>
                             افزودن آگهی جدید
                         </a>

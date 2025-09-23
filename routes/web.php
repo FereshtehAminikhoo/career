@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\JobPositionController;
+use App\Http\Controllers\panel\AdvertisementController;
+use App\Http\Controllers\panel\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(JobPositionController::class)->group(function () {
@@ -9,17 +11,15 @@ Route::controller(JobPositionController::class)->group(function () {
 });
 
 Route::prefix('panel')->group(function () {
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/', "show")->name('panel.dashboard');
+    });
 
-    Route::get('/post-job', function () {
-        return view('admin.post-job');
-    })->name('admin.post-job');
-
-    Route::post('/job/store', function () {
-        return redirect()->route('admin.jobs')->with('success', 'آگهی ثبت شد');
-    })->name('admin.job.store');
+    Route::controller(AdvertisementController::class)->group(function () {
+        Route::get('/advertisement/list', "show")->name('panel.advertisement.show');
+        Route::get('/advertisement/create', "create")->name('panel.advertisement.create');
+        Route::post('/advertisement/store', "store")->name('panel.advertisement.store');
+    });
 
     Route::get('/jobs', function () {
         $jobs = [
