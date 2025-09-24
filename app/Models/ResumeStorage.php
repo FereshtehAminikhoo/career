@@ -18,4 +18,14 @@ class ResumeStorage extends Model
         "mobile",
         "file_path",
     ];
+
+    public function job_position()
+    {
+        return $this->belongsTo(JobPosition::class, "job_position_id", "id");
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, "status_id", "id");
+    }
 }
