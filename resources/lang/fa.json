@@ -5,5 +5,16 @@
     "resume_received": "رزومه دریافت شده",
     "under_review": "در حال بررسی",
     "accepted": "تایید شده",
-    "rejected": "رد شده"
+    "rejected": "رد شده",
+    "intern": "کارآموز",
+    "junior": "جونیور",
+    "midlevel": "میدلول",
+    "senior": "سنیور",
+    "intern to junior": "کارآموز تا جونیور",
+    "junior to midlevel": "جونیور تا میدلول",
+    "midlevel to senior": "میدلول تا سنیور",
+    "full-time": "تمام وقت",
+    "part-time": "پاره وقت",
+    "remote": "دورکاری",
+    "internship": "کارآموزی"
 }
