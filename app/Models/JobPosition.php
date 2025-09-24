@@ -12,10 +12,11 @@ class JobPosition extends Model
     protected $fillable = [
         "category_id",
         "user_id",
+        "level_id",
         "title",
         "is_open",
         "description",
-        "level",
+        "skills",
         "price",
         "expired_at",
     ];

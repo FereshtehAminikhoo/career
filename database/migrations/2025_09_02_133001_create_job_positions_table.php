@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('level_id');
             $table->string('title');
             $table->boolean('is_open')->default(true);
             $table->longText('description')->nullable();
-            $table->string('level');
+            $table->string('skills');
             $table->string('price');
             $table->dateTime('expired_at')->nullable();
             $table->timestamps();
