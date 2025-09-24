@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\JobPositionController;
-use App\Http\Controllers\panel\AdvertisementController;
 use App\Http\Controllers\panel\DashboardController;
+use App\Http\Controllers\panel\ResumeStorageController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(JobPositionController::class)->group(function () {
@@ -15,20 +15,14 @@ Route::prefix('panel')->group(function () {
         Route::get('/', "show")->name('panel.dashboard');
     });
 
-    Route::controller(AdvertisementController::class)->group(function () {
-        Route::get('/advertisement/list', "show")->name('panel.advertisement.show');
-        Route::get('/advertisement/create', "create")->name('panel.advertisement.create');
-        Route::post('/advertisement/store', "store")->name('panel.advertisement.store');
+    Route::controller(\App\Http\Controllers\panel\JobPositionController::class)->group(function () {
+        Route::get('/job-position/list', "index")->name('panel.job-position.index');
+        Route::get('/job-position/create', "create")->name('panel.job-position.create');
+        Route::post('/job-position/store', "store")->name('panel.job-position.store');
+        Route::delete('/job-position/{jobPosition}', "destroy")->name('panel.job-position.destroy');
+        Route::get('/job-position/{jobPosition}/resumes', "job_position_resumes")->name('panel.job-position.resumes');
+        Route::get('/job-position/{jobPosition}/resume/{resumeStorage}', "job_position_resume_detail")->name('panel.job-position.resume.detail');
     });
-
-    Route::get('/jobs', function () {
-        $jobs = [
-            ['id' => 1, 'title' => 'توسعه‌دهنده فرانت‌اند', 'category' => 'توسعه نرم‌افزار', 'applicants' => 24, 'status' => 'فعال', 'date' => '2023-07-04'],
-            ['id' => 2, 'title' => 'کارشناس منابع انسانی', 'category' => 'منابع انسانی', 'applicants' => 18, 'status' => 'فعال', 'date' => '2023-07-28'],
-            ['id' => 3, 'title' => 'حسابدار ارشد', 'category' => 'مالی و حسابداری', 'applicants' => 12, 'status' => 'در انتظار تایید', 'date' => '2023-06-20'],
-        ];
-        return view('admin.jobs', compact('jobs'));
-    })->name('admin.jobs');
 
     Route::get('/applications', function () {
         $job_title = 'همه مشاغل';
