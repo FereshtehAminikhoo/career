@@ -24,7 +24,7 @@ class LevelSeeder extends Seeder
         ];
 
         foreach ($levels as $level) {
-            DB::table('levels')->updateOrInsert(
+            DB::table('job_levels')->updateOrInsert(
                 ["name" => $level],
                 ["created_at" => now(), "updated_at" => now()],
             );
