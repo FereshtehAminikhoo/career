@@ -14,13 +14,13 @@ class LevelSeeder extends Seeder
     public function run(): void
     {
         $levels = [
-            "intern",
-            "junior",
-            "midlevel",
-            "senior",
-            "intern to junior",
-            "junior to midlevel",
-            "midlevel to senior",
+            "Intern",
+            "Junior",
+            "Midlevel",
+            "Senior",
+            "Intern To Junior",
+            "Junior To Midlevel",
+            "Midlevel To Senior",
         ];
 
         foreach ($levels as $level) {

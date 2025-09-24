@@ -14,9 +14,9 @@ class UserTypeSeeder extends Seeder
     public function run(): void
     {
         $user_types = [
-            "manager",
-            "hiring_expert",
-            "technical_expert",
+            "Manager",
+            "Hiring Expert",
+            "Technical Expert",
         ];
 
         foreach ($user_types as $user_type) {

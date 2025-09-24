@@ -14,10 +14,10 @@ class TypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            "full-time",
-            "part-time",
-            "remote",
-            "internship",
+            "Full Time",
+            "Part Time",
+            "Remote",
+            "Internship",
         ];
 
         foreach ($types as $type){

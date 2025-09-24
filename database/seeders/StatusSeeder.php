@@ -14,10 +14,10 @@ class StatusSeeder extends Seeder
     public function run(): void
     {
         $statuses = [
-            "resume_received",
-            "under_review",
-            "accepted",
-            "rejected",
+            "Resume Received",
+            "Under Review",
+            "Accepted",
+            "Rejected",
         ];
 
         foreach ($statuses as $status) {
