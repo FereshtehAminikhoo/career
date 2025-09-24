@@ -10,17 +10,17 @@
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="p-6 border-b border-gray-200">
                         <div class="flex justify-between items-center">
-                            <h2 class="text-xl font-bold text-gray-800">رزومه‌های دریافتی برای آگهی: <span id="job-title">{{ $job_title }}</span></h2>
+                            <h2 class="text-xl font-bold text-gray-800">رزومه‌های دریافتی برای آگهی: <span id="job-title">{{ $jobPosition->title }}</span></h2>
                         </div>
                         <div class="mt-4 flex flex-col sm:flex-row sm:space-x-4 sm:space-x-reverse">
-                            @if (empty($job_id))
+                            @if (empty($jobPosition))
                                 <div class="mb-4 sm:mb-0 sm:w-1/2">
                                     <label for="filter-job" class="block text-sm font-medium text-gray-700 mb-1">فیلتر بر اساس آگهی</label>
                                     <select id="filter-job" class="block w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-700 hover:bg-gray-50 transition duration-200 appearance-none text-right pr-10" style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666666%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3e%3cpolyline points=%226 9 12 15 18 9%22%3e%3c/polyline%3e%3c/svg%3e'); background-position: left 0.5rem center; background-repeat: no-repeat; background-size: 1.5em;">
                                         <option value="">همه آگهی‌ها</option>
-                                        <option value="1">توسعه‌دهنده فرانت‌اند</option>
-                                        <option value="2">کارشناس منابع انسانی</option>
-                                        <option value="3">حسابدار ارشد</option>
+                                        @foreach($jobPositions as $job)
+                                            <option value="{{ $job->id }}">{{ __($job->title) }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             @endif
@@ -29,6 +29,8 @@
                                 <select id="sort-by" class="block w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-700 hover:bg-gray-50 transition duration-200 appearance-none text-right pr-10" style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666666%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3e%3cpolyline points=%226 9 12 15 18 9%22%3e%3c/polyline%3e%3c/svg%3e'); background-position: left 0.5rem center; background-repeat: no-repeat; background-size: 1.5em;">
                                     <option value="name-asc">نام (صعودی)</option>
                                     <option value="name-desc">نام (نزولی)</option>
+                                    <option value="name-asc">نام خانوادگی(صعودی)</option>
+                                    <option value="name-desc">نام خانوادگی(نزولی)</option>
                                     <option value="salary-asc">حقوق (صعودی)</option>
                                     <option value="salary-desc">حقوق (نزولی)</option>
                                     <option value="rank-asc">رتبه (صعودی)</option>
@@ -53,27 +55,30 @@
                             </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($filtered_applications ?? $applications as $application)
-                                <tr data-name="{{ $application['name'] }}" data-salary="{{ $application['salary'] }}" data-rank="{{ $application['rank'] }}" data-date="{{ $application['date'] }}" data-job-id="{{ $application['job_id'] }}">
+                            @foreach ($resumes as $resume)
+                                <tr data-first-name="{{ $resume->first_name }}" data-last-name="{{ $resume->last_name }}" data-salary="{{ $resume->job_position->salary }}" data-rank="{{ $application['rank'] }}" data-date="{{ $resume->created_at }}" data-job-id="{{ $resume->job_position->id }}">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">{{ $application['name'] }}</div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $resume->first_name }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ $application['email'] }}</div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $resume->last_name }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ toToman($application['salary']) }}</div>
+                                        <div class="text-sm text-gray-900">{{ $resume->email }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ toToman(number_format($resume->job_position->price)) }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ number_format($application['rank'], 1) }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ toPersianDate($application['date']) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 {{ $application['status'] == 'تایید شده' ? 'bg-green-100 text-green-800' : ($application['status'] == 'رد شده' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800') }} rounded-full text-xs">{{ $application['status'] }}</span>
+                                        <span class="px-2 py-1 {{ $resume->status->name == 'Accepted' ? 'bg-green-100 text-green-800' : ($resume->status->name == 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800') }} rounded-full text-xs">{{ __($resume->status->name) }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <a href="{{ route('admin.application-review', $application['id']) }}" class="text-indigo-600 hover:text-indigo-900 ml-3">بررسی</a>
-                                        <button onclick="openLogModal({{ $application['id'] }})" class="text-green-600 hover:text-green-800 ml-3">لاگ</button>
+                                        <button onclick="openLogModal({{ $resume->id }})" class="text-green-600 hover:text-green-800 ml-3">لاگ</button>
                                     </td>
                                 </tr>
                             @endforeach

@@ -6,23 +6,23 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class StatusSeeder extends Seeder
+class TypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $statuses = [
-            "Resume Received",
-            "Under Review",
-            "Accepted",
-            "Rejected",
+        $types = [
+            "Full Time",
+            "Part Time",
+            "Remote",
+            "Internship",
         ];
 
-        foreach ($statuses as $status) {
-            DB::table('statuses')->updateOrInsert(
-                ["name" => $status],
+        foreach ($types as $type){
+            DB::table('job_types')->updateOrInsert(
+                ["name" => $type],
                 ["created_at" => now(), "updated_at" => now()],
             );
         }
