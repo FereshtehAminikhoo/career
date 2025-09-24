@@ -13,7 +13,7 @@
                         <p class="text-gray-600 mt-1">فرم زیر را برای ثبت آگهی استخدام جدید تکمیل کنید.</p>
                     </div>
                     <div class="p-6">
-                        <form method="POST" action="{{ route('panel.advertisement.store') }}">
+                        <form method="POST" action="{{ route('panel.job-position.store') }}">
                             @csrf
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
@@ -24,21 +24,27 @@
                                     <label for="job-category" class="block text-sm font-medium text-gray-700 mb-1">دسته‌بندی</label>
                                     <select id="job-category" name="category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                         <option value="">انتخاب کنید</option>
-                                        <option value="development">توسعه نرم‌افزار</option>
-                                        <option value="design">طراحی</option>
-                                        <option value="marketing">بازاریابی</option>
-                                        <option value="hr">منابع انسانی</option>
-                                        <option value="finance">مالی و حسابداری</option>
+                                        @foreach($categories as $category)
+                                            <option value={{ $category->id }}>{{ __($category->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="job-level" class="block text-sm font-medium text-gray-700 mb-1">سطح</label>
+                                    <select id="job-level" name="level" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="">انتخاب کنید</option>
+                                        @foreach($levels as $level)
+                                            <option value={{ $level->id }}>{{ __($level->name) }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div>
                                     <label for="job-type" class="block text-sm font-medium text-gray-700 mb-1">نوع همکاری</label>
                                     <select id="job-type" name="type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                         <option value="">انتخاب کنید</option>
-                                        <option value="full-time">تمام وقت</option>
-                                        <option value="part-time">پاره وقت</option>
-                                        <option value="remote">دورکاری</option>
-                                        <option value="internship">کارآموزی</option>
+                                        @foreach($types as $type)
+                                            <option value={{ $type->id }}>{{ __($type->name) }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div>
@@ -60,12 +66,8 @@
                                     <p class="text-xs text-gray-500 mt-1">هر مورد را در یک خط جداگانه وارد کنید.</p>
                                 </div>--}}
                                 <div>
-                                    <label for="min-salary" class="block text-sm font-medium text-gray-700 mb-1">حداقل حقوق (تومان)</label>
-                                    <input type="text" id="min-salary" name="min_salary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="مثال: 10000000">
-                                </div>
-                                <div>
-                                    <label for="max-salary" class="block text-sm font-medium text-gray-700 mb-1">حداکثر حقوق (تومان)</label>
-                                    <input type="text" id="max-salary" name="max_salary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="مثال: 15000000">
+                                    <label for="salary" class="block text-sm font-medium text-gray-700 mb-1">میزان حقوق درخواستی(تومان)</label>
+                                    <input type="text" id="salary" name="salary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="مثال: 10000000">
                                 </div>
                                 <div>
                                     <label for="job-skills" class="block text-sm font-medium text-gray-700 mb-1">مهارت‌های مورد نیاز</label>
@@ -73,8 +75,8 @@
                                     <p class="text-xs text-gray-500 mt-1">مهارت‌ها را با کاما از هم جدا کنید</p>
                                 </div>
                                 <div>
-                                    <label for="job-deadline" class="block text-sm font-medium text-gray-700 mb-1">مهلت ارسال رزومه</label>
-                                    <input type="date" id="job-deadline" name="deadline" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="2025-09-30">
+                                    <label for="deadline" class="block text-sm font-medium text-gray-700 mb-1">مهلت ارسال رزومه</label>
+                                    <input type="date" id="deadline" name="deadline" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="2025-09-30">
                                 </div>
                             </div>
                             <div class="mt-8 pt-5 border-t border-gray-200 flex justify-end">
