@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class level extends Model
+class Joblevel extends Model
 {
     use SoftDeletes;
 

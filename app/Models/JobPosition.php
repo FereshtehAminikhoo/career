@@ -13,11 +13,13 @@ class JobPosition extends Model
         "category_id",
         "user_id",
         "level_id",
+        "type_id",
         "title",
         "is_open",
         "description",
         "skills",
         "price",
+        "location",
         "expired_at",
     ];
 }
