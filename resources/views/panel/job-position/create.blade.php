@@ -13,7 +13,7 @@
                         <p class="text-gray-600 mt-1">فرم زیر را برای ثبت آگهی استخدام جدید تکمیل کنید.</p>
                     </div>
                     <div class="p-6">
-                        <form method="POST" action="{{ route('panel.job-position.store') }}">
+                        <form method="POST" action="{{ route("panel.job-position.store") }}">
                             @csrf
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>

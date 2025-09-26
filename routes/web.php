@@ -3,25 +3,35 @@
 use App\Http\Controllers\JobPositionController;
 use App\Http\Controllers\panel\DashboardController;
 use App\Http\Controllers\panel\ResumeStorageController;
+use App\Http\Controllers\panel\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(JobPositionController::class)->group(function () {
-    Route::get('/', "show")->name("job-position.show");
-    Route::get('/detail', "show_detail")->name("job-position.detail");
+    Route::get('/', 'show')->name('job-position.show');
+    Route::get('/detail', 'show_detail')->name('job-position.detail');
 });
 
 Route::prefix('panel')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
-        Route::get('/', "show")->name('panel.dashboard');
+        Route::get('/', 'show')->name('panel.dashboard');
     });
 
     Route::controller(\App\Http\Controllers\panel\JobPositionController::class)->group(function () {
-        Route::get('/job-position/list', "index")->name('panel.job-position.index');
-        Route::get('/job-position/create', "create")->name('panel.job-position.create');
-        Route::post('/job-position/store', "store")->name('panel.job-position.store');
-        Route::delete('/job-position/{jobPosition}', "destroy")->name('panel.job-position.destroy');
-        Route::get('/job-position/{jobPosition}/resumes', "job_position_resumes")->name('panel.job-position.resumes');
-        Route::get('/job-position/{jobPosition}/resume/{resumeStorage}', "job_position_resume_detail")->name('panel.job-position.resume.detail');
+        Route::get('/job-position/list', 'index')->name('panel.job-position.index');
+        Route::get('/job-position/create', 'create')->name('panel.job-position.create');
+        Route::post('/job-position/store', 'store')->name('panel.job-position.store');
+        Route::delete('/job-position/{jobPosition}', 'destroy')->name('panel.job-position.destroy');
+        Route::get('/job-position/{jobPosition}/resumes', 'job_position_resumes')->name('panel.job-position.resumes');
+        Route::get('/job-position/{jobPosition}/resume/{resumeStorage}', 'job_position_resume_detail')->name('panel.job-position.resume.detail');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/user/list', 'index')->name('panel.user.index');
+        Route::get('/user/create', 'create')->name('panel.user.create');
+        Route::post('/user/store', 'store')->name('panel.user.store');
+        Route::get('/user/{user}/edit', 'edit')->name('panel.user.edit');
+        Route::patch('/user/{user}/update', 'update')->name('panel.user.update');
+        Route::delete('/user/{user}', 'destroy')->name('panel.user.destroy');
     });
 
     Route::get('/applications', function () {
@@ -525,10 +535,6 @@ Route::prefix('admin')->group(function () {
         ];
         return view('admin.ranked-applications', compact('ranked_applications'));
     })->name('admin.ranked-applications');
-
-    Route::get('/users', function () {
-        return view('admin.users');
-    })->name('admin.users');
 
     Route::get('/settings', function () {
         return view('admin.settings');

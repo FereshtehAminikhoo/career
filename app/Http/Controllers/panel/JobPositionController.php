@@ -4,6 +4,7 @@ namespace App\Http\Controllers\panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\JobPosition;
+use App\Models\ResumeStorage;
 use App\Repositories\JobCategoryRepository;
 use App\Repositories\JobLevelRepository;
 use App\Repositories\JobTypeRepository;
@@ -26,7 +27,7 @@ class JobPositionController extends Controller
     public function index()
     {
         $job_positions = $this->jobPositionRepo->all();
-        return view('panel.job-position.index', compact("job_positions"));
+        return view("panel.job-position.index", compact("job_positions"));
     }
 
     public function create()
@@ -34,25 +35,25 @@ class JobPositionController extends Controller
         $categories = $this->jobCategoryRepo->all();
         $types = $this->jobTypeRepo->all();
         $levels = $this->jobLevelRepo->all();
-        return view('panel.job-position.create', compact("categories", "types", "levels"));
+        return view("panel.job-position.create", compact("categories", "types", "levels"));
     }
 
     public function store(Request $request)
     {
         $advertisement = $this->jobPositionRepo->store($request);
-        return redirect()->route('panel.job-position.index');
+        return redirect()->route("panel.job-position.index");
     }
 
     public function destroy(JobPosition $jobPosition)
     {
         $jobPosition->delete();
-        return redirect()->route('panel.job-position.index');
+        return redirect()->route("panel.job-position.index");
     }
 
     public function job_position_resumes(JobPosition $jobPosition)
     {
         $jobPositions = $this->jobPositionRepo->all();
         $resumes = $this->jobPositionRepo->resumes($jobPosition);
-        return view('panel.resumeStorage.index', compact("resumes", "jobPositions", "jobPosition"));
+        return view("panel.resume-storage.index", compact("resumes", "jobPositions", "jobPosition"));
     }
 }
