@@ -42,4 +42,9 @@ class JobPosition extends Model
     {
         return $this->belongsTo(JobType::class, "type_id", "id");
     }
+
+    public function resumes()
+    {
+        return $this->hasMany(ResumeStorage::class, 'job_position_id', 'id');
+    }
 }

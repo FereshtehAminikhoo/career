@@ -46,6 +46,7 @@
                             <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نام متقاضی</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نام خانوادگی متقاضی</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ایمیل</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">حقوق پیشنهادی</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">رتبه میانگین</th>
@@ -56,7 +57,7 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($resumes as $resume)
-                                <tr data-first-name="{{ $resume->first_name }}" data-last-name="{{ $resume->last_name }}" data-salary="{{ $resume->job_position->salary }}" data-rank="{{ $application['rank'] }}" data-date="{{ $resume->created_at }}" data-job-id="{{ $resume->job_position->id }}">
+                                <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $resume->first_name }}</div>
                                     </td>
@@ -67,17 +68,17 @@
                                         <div class="text-sm text-gray-900">{{ $resume->email }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ toToman(number_format($resume->job_position->price)) }}</div>
+                                        <div class="text-sm text-gray-900">{{ number_format($resume->job_position->price) . " تومان" }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ number_format($application['rank'], 1) }}</div>
+                                        <div class="text-sm text-gray-900">{{ number_format($resume->scores->avg('score') ?? 0, 1) }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ toPersianDate($application['date']) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $resume->created_at }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 {{ $resume->status->name == 'Accepted' ? 'bg-green-100 text-green-800' : ($resume->status->name == 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800') }} rounded-full text-xs">{{ __($resume->status->name) }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <a href="{{ route('admin.application-review', $application['id']) }}" class="text-indigo-600 hover:text-indigo-900 ml-3">بررسی</a>
+                                        <a href="{{ route("panel.job-position.resume.detail", [$jobPosition->id, $resume->id]) }}" class="text-indigo-600 hover:text-indigo-900 ml-3">بررسی</a>
                                         <button onclick="openLogModal({{ $resume->id }})" class="text-green-600 hover:text-green-800 ml-3">لاگ</button>
                                     </td>
                                 </tr>

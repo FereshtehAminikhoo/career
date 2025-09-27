@@ -3,6 +3,7 @@
 namespace App\Repositories\panel;
 
 use App\Models\JobPosition;
+use App\Models\ResumeScore;
 use App\Models\ResumeStorage;
 
 class JobPositionRepository
@@ -39,4 +40,28 @@ class JobPositionRepository
         return ResumeStorage::where('job_position_id', $id)->get();
     }
 
+    public function resume($id)
+    {
+        return ResumeStorage::where('id', $id)->first();
+    }
+
+    public function submit_score($data)
+    {
+        return ResumeScore::create([
+            "user_id" => 1,
+            "status_id" => $data->status,
+            "resume_storage_id" => $data->resume_id,
+            "description" => $data->comments,
+            "score" => $data->score,
+        ]);
+    }
+
+    public function update_resume_status($data, $id)
+    {
+        $resume = ResumeStorage::where('id', $id)->first();
+        $resume->update([
+            "status_id" => $data->status,
+        ]);
+        return $resume;
+    }
 }

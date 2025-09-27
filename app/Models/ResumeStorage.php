@@ -28,4 +28,9 @@ class ResumeStorage extends Model
     {
         return $this->belongsTo(Status::class, "status_id", "id");
     }
+
+    public function scores()
+    {
+        return $this->hasMany(ResumeScore::class, 'resume_storage_id', 'id');
+    }
 }

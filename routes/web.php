@@ -21,7 +21,8 @@ Route::prefix('panel')->group(function () {
         Route::post('/job-position/store', "store")->name('panel.job-position.store');
         Route::delete('/job-position/{jobPosition}', "destroy")->name('panel.job-position.destroy');
         Route::get('/job-position/{jobPosition}/resumes', "job_position_resumes")->name('panel.job-position.resumes');
-        Route::get('/job-position/{jobPosition}/resume/{resumeStorage}', "job_position_resume_detail")->name('panel.job-position.resume.detail');
+        Route::get('/job-position/{jobPosition}/resume/{resumeStorage}', 'job_position_resume_detail')->name('panel.job-position.resume.detail');
+        Route::post('/job-position/{jobPosition}/resume/{resumeStorage}/submit_score', 'submit_score')->name('panel.job-position.resume.submit_score');
     });
 
     Route::get('/applications', function () {
