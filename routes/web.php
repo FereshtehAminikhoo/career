@@ -12,7 +12,7 @@ Route::controller(JobPositionController::class)->group(function () {
 
 Route::prefix('panel')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
-        Route::get('/', "show")->name('panel.dashboard');
+        Route::get('/', "index")->name('panel.dashboard');
     });
 
     Route::controller(\App\Http\Controllers\panel\JobPositionController::class)->group(function () {
