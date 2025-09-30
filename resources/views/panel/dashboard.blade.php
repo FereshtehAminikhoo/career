@@ -13,14 +13,14 @@
                     <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="bg-indigo-50 p-4 rounded-lg text-center">
                             <h3 class="text-lg font-semibold text-gray-800">تعداد آگهی‌ها</h3>
-                            <p class="text-3xl font-bold text-indigo-600">۴۸</p>
+                            <p class="text-3xl font-bold text-indigo-600">{{ $job_positions->count() }}</p>
                         </div>
                         <div class="bg-green-50 p-4 rounded-lg text-center">
-                            <h3 class="text-lg font-semibold text-gray-800">رزومه‌های دریافتی</h3>
+                            <h3 class="text-lg font-semibold text-gray-800">{{ $resumes->count() }}</h3>
                             <p class="text-3xl font-bold text-green-600">۱۲۳</p>
                         </div>
                         <div class="bg-yellow-50 p-4 rounded-lg text-center">
-                            <h3 class="text-lg font-semibold text-gray-800">کاربران فعال</h3>
+                            <h3 class="text-lg font-semibold text-gray-800">{{ $users->count() }}</h3>
                             <p class="text-3xl font-bold text-yellow-600">۲۷۵</p>
                         </div>
                     </div>
