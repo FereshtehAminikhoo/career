@@ -26,7 +26,7 @@
             <i class="fas fa-briefcase ml-2"></i>
             مدیریت آگهی‌ها
         </a>
-        <a href="{{ route('admin.users') }}" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md {{ $active == 'users' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
+        <a href="{{ route('panel.user.index') }}" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md {{ $active == 'users' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
             <i class="fas fa-users ml-2"></i>
             کاربران
         </a>
