@@ -73,7 +73,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ number_format($resume->scores->avg('score') ?? 0, 1) }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $resume->created_at }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ \Morilog\Jalali\Jalalian::fromDateTime($resume->created_at)->format('Y/m/d') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 {{ $resume->status->name == 'Accepted' ? 'bg-green-100 text-green-800' : ($resume->status->name == 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800') }} rounded-full text-xs">{{ __($resume->status->name) }}</span>
                                     </td>
