@@ -64,4 +64,9 @@ class JobPositionRepository
         ]);
         return $resume;
     }
+
+    public function scores($id)
+    {
+        return ResumeScore::where("resume_storage_id", $id)->with(['user', 'status'])->get();
+    }
 }

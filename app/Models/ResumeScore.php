@@ -17,8 +17,18 @@ class ResumeScore extends Model
         "score",
     ];
 
-    public function score()
+    public function resume()
     {
         return $this->belongsTo(ResumeStorage::class, "resume_storage_id", "id");
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id", "id");
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, "status_id", "id");
     }
 }

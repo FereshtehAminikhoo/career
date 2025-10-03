@@ -57,7 +57,13 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($resumes as $resume)
-                                <tr>
+                                <tr data-name="{{ $resume->first_name }}"
+                                    data-lastname="{{ $resume->last_name }}"
+                                    data-salary="{{ $resume->job_position->price }}"
+                                    data-rank="{{ $resume->scores->avg('score') ?? 0 }}"
+                                    data-date="{{ $resume->created_at->toDateString() }}"
+                                    data-job-id="{{ $jobPosition->id }}"
+                                >
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $resume->first_name }}</div>
                                     </td>
@@ -79,7 +85,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <a href="{{ route("panel.job-position.resume.detail", [$jobPosition->id, $resume->id]) }}" class="text-indigo-600 hover:text-indigo-900 ml-3">بررسی</a>
-                                        <button onclick="openLogModal({{ $resume->id }})" class="text-green-600 hover:text-green-800 ml-3">لاگ</button>
+                                        <button onclick="openLogModal({{ $jobPosition->id }}, {{ $resume->id }})" class="text-green-600 hover:text-green-800 ml-3">لاگ</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -118,31 +124,48 @@
     </div>
 
     <script>
-        function openLogModal(applicationId) {
-            fetch(`/admin/application-log/${applicationId}`)
+        function openLogModal(jobPositionId, resumeStorageId) {
+            fetch(`/panel/job-position/${jobPositionId}/resume/${resumeStorageId}/log`)
                 .then(response => response.json())
                 .then(data => {
                     const tableBody = document.getElementById('log-table-body');
                     tableBody.innerHTML = '';
-                    document.getElementById('log-modal-title').textContent = `لاگ بررسی رزومه: ${data.applicant_name}`;
-                    data.logs.forEach(log => {
+
+                    document.getElementById('log-modal-title').textContent =
+                        `لاگ بررسی رزومه: ${data.resume_storage.first_name} ${data.resume_storage.last_name}`;
+
+                    data.resume_scores.forEach(resume_score => {
                         const row = `
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${log.reviewer}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${log.score}</td>
-                            <td class="px-6 py-4 text-sm text-gray-700 whitespace-pre-wrap">${log.comments}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <span class="px-2 py-1 ${log.status === 'تایید' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'} rounded-full text-xs">${log.status}</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.date}</td>
-                        </tr>
-                    `;
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            ${resume_score.user.name ?? '-'}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            ${resume_score.score ?? '-'}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700 whitespace-pre-wrap">
+                            ${resume_score.description ?? '-'}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 py-1 ${resume_score.status.name === 'تایید'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-yellow-100 text-yellow-800'} rounded-full text-xs">
+                                ${resume_score.status.name ?? '-'}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            ${resume_score.created_at ?? '-'}
+                        </td>
+                    </tr>
+                `;
                         tableBody.innerHTML += row;
                     });
+
                     document.getElementById('log-modal').classList.remove('hidden');
                 })
                 .catch(error => console.error('Error fetching logs:', error));
         }
+
 
         function closeLogModal() {
             document.getElementById('log-modal').classList.add('hidden');
@@ -155,26 +178,39 @@
 
             rows.sort((a, b) => {
                 let aVal, bVal;
-                if (sortValue === 'name-asc' || sortValue === 'name-desc') {
+
+                if (sortValue.startsWith('name')) {
                     aVal = a.dataset.name;
                     bVal = b.dataset.name;
-                    return sortValue === 'name-asc' ? aVal.localeCompare(bVal, 'fa') : bVal.localeCompare(aVal, 'fa');
-                } else if (sortValue === 'salary-asc' || sortValue === 'salary-desc') {
+                    return sortValue.endsWith('desc')
+                        ? aVal.localeCompare(bVal, 'fa')
+                        : bVal.localeCompare(aVal, 'fa');
+                }
+
+                if (sortValue.startsWith('lastname')) {
+                    aVal = a.dataset.lastname;
+                    bVal = b.dataset.lastname;
+                    return sortValue.endsWith('desc')
+                        ? aVal.localeCompare(bVal, 'fa')
+                        : bVal.localeCompare(aVal, 'fa');
+                }
+
+                if (sortValue.startsWith('salary')) {
                     aVal = parseInt(a.dataset.salary);
                     bVal = parseInt(b.dataset.salary);
-                } else if (sortValue === 'rank-asc' || sortValue === 'rank-desc') {
+                }
+
+                if (sortValue.startsWith('rank')) {
                     aVal = parseFloat(a.dataset.rank);
                     bVal = parseFloat(b.dataset.rank);
-                } else if (sortValue === 'date-asc' || sortValue === 'date-desc') {
+                }
+
+                if (sortValue.startsWith('date')) {
                     aVal = new Date(a.dataset.date).getTime();
                     bVal = new Date(b.dataset.date).getTime();
                 }
 
-                if (isNaN(aVal) || isNaN(bVal)) {
-                    return 0; // Fallback to prevent errors
-                }
-
-                return sortValue.endsWith('-asc') ? aVal - bVal : bVal - aVal;
+                return sortValue.endsWith('desc') ? aVal - bVal : bVal - aVal;
             });
 
             rows.forEach(row => table.tBodies[0].appendChild(row));

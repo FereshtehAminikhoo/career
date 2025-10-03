@@ -4,6 +4,7 @@ namespace App\Http\Controllers\panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\JobPosition;
+use App\Models\ResumeScore;
 use App\Models\ResumeStorage;
 use App\Repositories\JobCategoryRepository;
 use App\Repositories\JobLevelRepository;
@@ -76,5 +77,16 @@ class JobPositionController extends Controller
         $resume_score = $this->jobPositionRepo->submit_score($request);
         $update_status = $this->jobPositionRepo->update_resume_status($request, $resumeStorage->id);
         return redirect()->route('panel.job-position.resumes', $jobPosition);
+    }
+
+    public function score_logs(JobPosition $jobPosition, ResumeStorage $resumeStorage)
+    {
+        $resume_scores = $this->jobPositionRepo->scores($resumeStorage->id);
+        return response()->json([
+            "job_position" => $jobPosition,
+            "resume_storage" => $resumeStorage,
+            "resume_scores" => $resume_scores
+        ]);
+
     }
 }
