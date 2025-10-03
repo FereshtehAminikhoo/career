@@ -20,6 +20,8 @@ Route::prefix('panel')->group(function () {
         Route::get('/job-position/list', "index")->name('panel.job-position.index');
         Route::get('/job-position/create', "create")->name('panel.job-position.create');
         Route::post('/job-position/store', "store")->name('panel.job-position.store');
+        Route::get('/job-position/{jobPosition}/edit', "edit")->name('panel.job-position.edit');
+        Route::post('/job-position/{jobPosition}/update', "update")->name('panel.job-position.update');
         Route::delete('/job-position/{jobPosition}', "destroy")->name('panel.job-position.destroy');
         Route::get('/job-position/{jobPosition}/resumes', "job_position_resumes")->name('panel.job-position.resumes');
         Route::get('/job-position/{jobPosition}/resume/{resumeStorage}', 'job_position_resume_detail')->name('panel.job-position.resume.detail');
@@ -536,10 +538,6 @@ Route::prefix('admin')->group(function () {
         ];
         return view('admin.ranked-applications', compact('ranked_applications'));
     })->name('admin.ranked-applications');
-
-    Route::get('/users', function () {
-        return view('admin.users');
-    })->name('admin.users');
 
     Route::get('/settings', function () {
         return view('admin.settings');
