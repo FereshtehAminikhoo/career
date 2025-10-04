@@ -5,7 +5,7 @@
                 <i class="fas fa-user"></i>
             </div>
             <div>
-                <p class="font-medium">مدیر سیستم</p>
+                <p class="font-medium">{{ __(auth()->user()->type->name) }} سیستم  </p>
                 <p class="text-xs text-gray-500">سطح دسترسی: مدیرکل</p>
             </div>
         </div>
