@@ -47,7 +47,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-left ltr">{{ \Morilog\Jalali\Jalalian::fromDateTime($job_position->created_at)->format('Y/m/d') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <a href="{{ route('panel.job-position.resumes', $job_position->id) }}" class="text-indigo-600 hover:text-indigo-900 ml-3">مشاهده رزومه‌ها</a>
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 ml-3">ویرایش</a>
+                                        <a href="{{ route('panel.job-position.edit', $job_position->id) }}" class="text-indigo-600 hover:text-indigo-900 ml-3">ویرایش</a>
                                         <form action="{{ route('panel.job-position.destroy', $job_position->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')

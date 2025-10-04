@@ -49,6 +49,16 @@ class JobPositionController extends Controller
         return redirect()->route('panel.job-position.index');
     }
 
+    public function edit(JobPosition $jobPosition)
+    {
+        return view("panel.job-position.edit", compact("jobPosition"));
+    }
+
+    public function update(JobPosition $jobPosition, Request $request)
+    {
+
+    }
+
     public function destroy(JobPosition $jobPosition)
     {
         $jobPosition->delete();
