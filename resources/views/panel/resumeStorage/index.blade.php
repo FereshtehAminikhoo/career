@@ -134,7 +134,26 @@
                     document.getElementById('log-modal-title').textContent =
                         `لاگ بررسی رزومه: ${data.resume_storage.first_name} ${data.resume_storage.last_name}`;
 
+                    const statusTranslations = {
+                        'Under Review': 'در حال بررسی',
+                        'Accepted': 'تایید شده',
+                        'Rejected': 'رد شده'
+                    };
+
+                    data.resume_scores.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
                     data.resume_scores.forEach(resume_score => {
+                        const translatedStatus = statusTranslations[resume_score.status.name] ?? resume_score.status.name;
+
+                        const gregorianDate = new Date(resume_score.created_at);
+
+                        const persianDate = new Intl.DateTimeFormat('fa-IR', {
+                            dateStyle: 'medium',
+                            timeStyle: 'short',
+                            calendar: 'persian',
+                            timeZone: 'UTC'
+                        }).format(gregorianDate);
+
                         const row = `
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -147,14 +166,14 @@
                             ${resume_score.description ?? '-'}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <span class="px-2 py-1 ${resume_score.status.name === 'تایید'
+                            <span class="px-2 py-1 ${resume_score.status.name === 'Accepted'
                             ? 'bg-green-100 text-green-800'
                             : 'bg-yellow-100 text-yellow-800'} rounded-full text-xs">
-                                ${resume_score.status.name ?? '-'}
+                                ${translatedStatus ?? '-'}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${resume_score.created_at ?? '-'}
+                             ${persianDate ?? '-'}
                         </td>
                     </tr>
                 `;
