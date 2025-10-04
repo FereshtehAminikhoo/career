@@ -275,10 +275,6 @@ Route::prefix('panel')->group(function () {
     Route::post('/settings/update', function () {
         return redirect()->route('admin.settings')->with('success', 'تنظیمات ذخیره شد');
     })->name('admin.settings.update');
-
-    Route::post('/logout', function () {
-        return redirect()->route('login')->with('success', 'با موفقیت خارج شدید');
-    })->name('admin.logout');
 });
 
 
@@ -547,8 +543,4 @@ Route::prefix('admin')->group(function () {
     Route::post('/settings/update', function () {
         return redirect()->route('admin.settings')->with('success', 'تنظیمات ذخیره شد');
     })->name('admin.settings.update');
-
-    Route::post('/logout', function () {
-        return redirect()->route('login')->with('success', 'با موفقیت خارج شدید');
-    })->name('admin.logout');
 });

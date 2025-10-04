@@ -34,9 +34,15 @@
             <i class="fas fa-cog ml-2"></i>
             تنظیمات
         </a>
-        <a href="{{ route('admin.logout') }}" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md {{ $active == 'logout' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
-            <i class="fas fa-sign-out-alt ml-2"></i>
-            خروج
-        </a>
+        <form method="POST" action="{{ route('logout') }}" class="inline">
+            @csrf
+            <button type="submit"
+                    class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md
+            {{ $active == 'logout' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
+                <i class="fas fa-sign-out-alt ml-2"></i>
+                خروج
+            </button>
+        </form>
+
     </nav>
 </div>

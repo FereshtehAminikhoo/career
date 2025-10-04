@@ -7,9 +7,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "laravel/fortify": "^1.31",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "morilog/jalali": "^3.4"
+        "morilog/jalali": "^3.4",
+        "zacksmash/fortify-ui": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -25,6 +25,36 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- بخش پیام status Fortify --}}
+                {{--@if (session('status'))
+                    <div class="bg-blue-50 p-4 mb-4 rounded text-blue-700">
+                        {{ session('status') }}
+                    </div>
+                @endif--}}
+
+                {{-- فرم خروج --}}
+                {{--<form method="POST" action="{{ route('logout') }}" class="mb-6">
+                    @csrf
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                        {{ __('Logout') }}
+                    </button>
+                </form>--}}
+
+                {{-- فرم‌های Fortify: پروفایل، رمز، دو مرحله‌ای --}}
+                {{--<div class="space-y-6">
+                    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updateProfileInformation()))
+                        @include('profile.update-profile-information-form')
+                    @endif
+
+                    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+                        @include('profile.update-password-form')
+                    @endif
+
+                    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::twoFactorAuthentication()))
+                        @include('profile.two-factor-authentication-form')
+                    @endif
+                </div>--}}
             </div>
         </div>
     </div>
