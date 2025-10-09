@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('is_open')->default(true);
             $table->longText('description')->nullable();
-            $table->string('skills');
+            $table->longText('skills');
             $table->string('price');
             $table->text('location');
             $table->dateTime('expired_at')->nullable();
