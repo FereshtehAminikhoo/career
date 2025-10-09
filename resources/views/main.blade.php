@@ -9,45 +9,64 @@
         <div class="mb-8">
             <h2 class="text-2xl font-bold text-gray-800">فرصت‌های شغلی</h2>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Active Job Card -->
+            @foreach($job_positions as $job_position)
             <div class="job-card rounded-xl overflow-hidden relative">
+                @if($job_position->expired_at < now() || $job_position->is_open == 0)
+                <div class="expired-tag">منقضی شده</div>
+                @endif
                 <div class="p-6">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">توسعه نرم‌افزار</span>
-                            <h3 class="text-xl font-bold text-gray-800 mt-2">توسعه‌دهنده فرانت‌اند</h3>
+                            <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">{{ __($job_position->category->name) }}</span>
+                            <h3 class="text-xl font-bold text-gray-800 mt-2">{{ $job_position->title }}</h3>
                             <p class="text-gray-600 mt-1">شرکت فناوری اطلاعات نوین</p>
                         </div>
+                        @php
+                            $categoryIcons = [
+                                "Management & Leadership" => "fas fa-user-tie",
+                                "Operations" => "fas fa-cogs",
+                                "Technical & Engineering" => "fas fa-laptop-code",
+                                "Support & Customer Service" => "fas fa-headset",
+                                "Sales & Marketing" => "fas fa-chart-line",
+                                "HR & Administration" => "fas fa-users",
+                                "Finance & Accounting" => "fas fa-calculator",
+                                "Research & Development" => "fas fa-flask",
+                                "Legal & Compliance" => "fas fa-balance-scale",
+                                "General Services" => "fas fa-concierge-bell",
+                            ];
+                        @endphp
                         <div class="text-indigo-600 text-3xl">
-                            <i class="fas fa-laptop-code"></i>
+                            <i class="{{ $categoryIcons[$job_position->category->name] ?? 'fas fa-briefcase' }}"></i>
                         </div>
                     </div>
                     <div class="mt-4 flex flex-wrap gap-2">
                         <span class="flex items-center text-gray-600 text-sm">
                             <i class="fas fa-map-marker-alt ml-1"></i>
-                            تهران
+                            {{ $job_position->location }}
                         </span>
                         <span class="flex items-center text-gray-600 text-sm">
                             <i class="fas fa-clock ml-1"></i>
-                            تمام وقت
+                            {{ __($job_position->type->name) }}
                         </span>
                         <span class="flex items-center text-gray-600 text-sm">
                             <i class="fas fa-money-bill-wave ml-1"></i>
-                            ۱۵ - ۲۰ میلیون تومان
+                            {{ $job_position->price }}
                         </span>
                     </div>
-                    <p class="text-gray-700 mt-3 text-sm line-clamp-2">به دنبال یک توسعه‌دهنده فرانت‌اند با تجربه در React.js و TailwindCSS برای پیوستن به تیم فنی ما هستیم. حداقل ۳ سال سابقه کار در این زمینه مورد نیاز است.</p>
+                    <p class="text-gray-700 mt-3 text-sm line-clamp-2">{{ $job_position->description }}</p>
                     <div class="mt-4 flex justify-between items-center">
-                        <span class="text-xs text-gray-500">۲ روز پیش</span>
-                        <a href="#job-detail" class="text-indigo-600 hover:text-indigo-800 font-medium">مشاهده جزئیات</a>
+                        <span class="text-xs text-gray-500">{{ \Morilog\Jalali\Jalalian::fromDateTime($job_position->created_at)->ago() }}</span>
+                        <a href="{{ route('job-position.detail', $job_position->id) }}" class="text-indigo-600 hover:text-indigo-800 font-medium">مشاهده جزئیات</a>
                     </div>
                 </div>
             </div>
-            
+            @endforeach
+
             <!-- Expired Job Card -->
-            <div class="job-card rounded-xl overflow-hidden relative">
+            {{--<div class="job-card rounded-xl overflow-hidden relative">
                 <div class="expired-tag">منقضی شده</div>
                 <div class="p-6">
                     <div class="flex justify-between items-start">
@@ -80,10 +99,10 @@
                         <a href="#job-detail" class="text-green-600 hover:text-green-800 font-medium">مشاهده جزئیات</a>
                     </div>
                 </div>
-            </div>
-            
+            </div>--}}
+
             <!-- Another Active Job Card -->
-            <div class="job-card rounded-xl overflow-hidden relative">
+            {{--<div class="job-card rounded-xl overflow-hidden relative">
                 <div class="p-6">
                     <div class="flex justify-between items-start">
                         <div>
@@ -115,9 +134,9 @@
                         <a href="#job-detail" class="text-blue-600 hover:text-blue-800 font-medium">مشاهده جزئیات</a>
                     </div>
                 </div>
-            </div>
+            </div>--}}
         </div>
-        
+
         <div class="mt-8 flex justify-center">
             <nav class="flex items-center gap-2">
                 <button class="pagination-circle bg-gray-200 text-gray-700 hover:bg-gray-300">
@@ -132,7 +151,7 @@
             </nav>
         </div>
     </section>
-    
+
     <!-- Job Detail Page -->
     <section id="job-detail" class="mb-12 hidden">
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -154,7 +173,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="col-span-2">
                         <div class="mb-6">
@@ -163,7 +182,7 @@
                                 شرکت فناوری اطلاعات نوین در حال گسترش تیم فنی خود می‌باشد و به دنبال یک توسعه‌دهنده فرانت‌اند با تجربه برای پیوستن به تیم ما است. در این نقش، شما مسئول توسعه و نگهداری رابط کاربری محصولات نرم‌افزاری ما خواهید بود و با تیم‌های طراحی و بک‌اند برای ایجاد تجربیات کاربری عالی همکاری خواهید کرد.
                             </p>
                         </div>
-                        
+
                         <div class="mb-6">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">مسئولیت‌ها</h3>
                             <ul class="list-disc pr-5 text-gray-700 space-y-2">
@@ -174,7 +193,7 @@
                                 <li>همکاری با تیم بک‌اند برای یکپارچه‌سازی APIها</li>
                             </ul>
                         </div>
-                        
+
                         <div class="mb-6">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">الزامات</h3>
                             <ul class="list-disc pr-5 text-gray-700 space-y-2">
@@ -187,7 +206,7 @@
                             </ul>
                         </div>
                     </div>
-                    
+
                     <div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">جزئیات شغل</h3>
@@ -223,7 +242,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="mt-4 bg-gray-50 p-4 rounded-lg">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">درباره شرکت</h3>
                             <p class="text-gray-700 text-sm">
@@ -243,7 +262,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Apply Form (Hidden by default) -->
             <div id="apply-form" class="hidden p-6 bg-gray-50">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">ارسال رزومه</h3>
@@ -291,7 +310,7 @@
                 </form>
             </div>
         </section>
-        
+
         <!-- Post Job Page (Admin) -->
         <section id="post-job" class="mb-12 hidden">
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -299,7 +318,7 @@
                     <h2 class="text-2xl font-bold text-gray-800">ثبت آگهی جدید</h2>
                     <p class="text-gray-600 mt-1">فرم زیر را برای ثبت آگهی استخدام جدید تکمیل کنید.</p>
                 </div>
-                
+
                 <div class="p-6">
                     <form>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -364,7 +383,7 @@
                                 <input type="date" id="job-deadline" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             </div>
                         </div>
-                        
+
                         <div class="mt-8 pt-5 border-t border-gray-200 flex justify-end">
                             <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">
                                 انصراف
@@ -377,7 +396,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Admin Dashboard -->
         <section id="admin" class="mb-12 hidden">
             <div class="flex flex-col md:flex-row gap-6">
@@ -397,7 +416,7 @@
                             <p class="text-xs text-gray-500">آخرین ورود: امروز ۱۴:۳۰</p>
                         </div>
                     </div>
-                    
+
                     <nav class="space-y-1">
                         <a href="#admin-jobs" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md bg-indigo-50 text-indigo-700">
                             <i class="fas fa-briefcase ml-2"></i>
@@ -421,7 +440,7 @@
                         </a>
                     </nav>
                 </div>
-                
+
                 <!-- Main Content -->
                 <div class="flex-1">
                     <!-- Admin Jobs -->
@@ -435,7 +454,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
@@ -509,7 +528,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
                             <div class="flex-1 flex justify-between sm:hidden">
                                 <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> قبلی </a>
@@ -544,7 +563,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Applications for a Job -->
                     <div id="admin-applications" class="bg-white rounded-lg shadow-md overflow-hidden mt-6 hidden">
                         <div class="p-6 border-b border-gray-200">
@@ -565,7 +584,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
@@ -722,7 +741,7 @@
                             </table>
                         </div>
                     </div>
-                    
+
                     <!-- Application Detail -->
                     <div id="admin-application-detail" class="bg-white rounded-lg shadow-md overflow-hidden mt-6 hidden">
                         <div class="p-6 border-b border-gray-200">
@@ -736,7 +755,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="p-6">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div class="md:col-span-2">
@@ -761,7 +780,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="bg-gray-50 p-4 rounded-lg mb-6">
                                         <h3 class="text-lg font-bold text-gray-800 mb-3">سوابق شغلی</h3>
                                         <div class="space-y-4">
@@ -777,7 +796,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="bg-gray-50 p-4 rounded-lg">
                                         <h3 class="text-lg font-bold text-gray-800 mb-3">تحصیلات</h3>
                                         <div class="border-l-2 border-indigo-500 pl-4">
@@ -786,7 +805,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div>
                                     <div class="bg-gray-50 p-4 rounded-lg mb-6">
                                         <h3 class="text-lg font-bold text-gray-800 mb-3">مهارت‌ها</h3>
@@ -800,7 +819,7 @@
                                             <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">Responsive Design</span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="bg-gray-50 p-4 rounded-lg mb-6">
                                         <h3 class="text-lg font-bold text-gray-800 mb-3">ارزیابی‌ها</h3>
                                         <div class="space-y-4">
@@ -836,7 +855,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="bg-gray-50 p-4 rounded-lg">
                                         <h3 class="text-lg font-bold text-gray-800 mb-3">عملیات</h3>
                                         <div class="space-y-3">
@@ -862,14 +881,14 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Interview Scheduling -->
                     <div id="admin-interview-schedule" class="bg-white rounded-lg shadow-md overflow-hidden mt-6 hidden">
                         <div class="p-6 border-b border-gray-200">
                             <h2 class="text-xl font-bold text-gray-800">برنامه‌ریزی مصاحبه</h2>
                             <p class="text-sm text-gray-600 mt-1">برای متقاضی: محمد رضایی | موقعیت شغلی: توسعه‌دهنده فرانت‌اند</p>
                         </div>
-                        
+
                         <div class="p-6">
                             <form>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -914,7 +933,7 @@
                                         <textarea id="interview-notes" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                                     </div>
                                 </div>
-                                
+
                                 <div class="mt-8 pt-5 border-t border-gray-200 flex justify-end">
                                     <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">
                                         انصراف

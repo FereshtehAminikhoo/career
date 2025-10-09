@@ -7,8 +7,9 @@ use App\Http\Controllers\panel\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(JobPositionController::class)->group(function () {
-    Route::get('/', "show")->name("job-position.show");
-    Route::get('/detail', "show_detail")->name("job-position.detail");
+    Route::get('/', "index")->name("job-position.show");
+    Route::get('/detail/{jobPosition}', "show_detail")->name("job-position.detail");
+    Route::post('/send_resume/{jobPosition}', "send_resume")->name("job-position.send_resume");
 });
 
 Route::prefix('panel')->group(function () {

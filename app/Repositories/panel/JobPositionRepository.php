@@ -10,7 +10,7 @@ class JobPositionRepository
 {
     public function all()
     {
-        return JobPosition::orderBy('created_at', 'desc')->get();
+        return JobPosition::withCount('resumes')->orderBy('created_at', 'desc')->get();
     }
 
     public function find($id)
@@ -38,6 +38,13 @@ class JobPositionRepository
     public function resumes($id)
     {
         return ResumeStorage::where('job_position_id', $id)->get();
+    }
+
+    public function resumes_count()
+    {
+        return ResumeStorage::selectRaw('job_position_id, COUNT(*) as total')
+            ->groupBy('job_position_id')
+            ->pluck('total', 'job_position_id');
     }
 
     public function resume($id)

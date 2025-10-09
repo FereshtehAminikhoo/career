@@ -10,8 +10,8 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-start">
                     <div>
-                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">توسعه نرم‌افزار</span>
-                        <h2 class="text-2xl font-bold text-gray-800 mt-2">توسعه‌دهنده فرانت‌اند</h2>
+                        <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">{{ __($jobPosition->category->name) }}</span>
+                        <h2 class="text-2xl font-bold text-gray-800 mt-2">{{ $jobPosition->title }}</h2>
                         <p class="text-gray-600 mt-1">شرکت فناوری اطلاعات نوین</p>
                     </div>
                     <div class="flex space-x-3 space-x-reverse">
@@ -25,16 +25,16 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="col-span-2">
                         <div class="mb-6">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">شرح موقعیت شغلی</h3>
                             <p class="text-gray-700 leading-relaxed">
-                                شرکت فناوری اطلاعات نوین در حال گسترش تیم فنی خود می‌باشد و به دنبال یک توسعه‌دهنده فرانت‌اند با تجربه برای پیوستن به تیم ما است. در این نقش، شما مسئول توسعه و نگهداری رابط کاربری محصولات نرم‌افزاری ما خواهید بود و با تیم‌های طراحی و بک‌اند برای ایجاد تجربیات کاربری عالی همکاری خواهید کرد.
+                                {{ $jobPosition->description }}
                             </p>
                         </div>
-                        
+
                         <div class="mb-6">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">مسئولیت‌ها</h3>
                             <ul class="list-disc pr-5 text-gray-700 space-y-2">
@@ -45,7 +45,7 @@
                                 <li>همکاری با تیم بک‌اند برای یکپارچه‌سازی APIها</li>
                             </ul>
                         </div>
-                        
+
                         <div class="mb-6">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">الزامات</h3>
                             <ul class="list-disc pr-5 text-gray-700 space-y-2">
@@ -58,30 +58,30 @@
                             </ul>
                         </div>
                     </div>
-                    
+
                     <div>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">جزئیات شغل</h3>
                             <div class="space-y-4">
                                 <div>
                                     <p class="text-gray-500 text-sm">موقعیت شغلی</p>
-                                    <p class="text-gray-800">توسعه‌دهنده فرانت‌اند</p>
+                                    <p class="text-gray-800">{{ $jobPosition->title }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-sm">نوع همکاری</p>
-                                    <p class="text-gray-800">تمام وقت</p>
+                                    <p class="text-gray-800">{{ __($jobPosition->type->name) }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-sm">حقوق</p>
-                                    <p class="text-gray-800">۱۵ - ۲۰ میلیون تومان</p>
+                                    <p class="text-gray-800">{{ $jobPosition->price }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-sm">محدوده مکانی</p>
-                                    <p class="text-gray-800">تهران، سعادت آباد</p>
+                                    <p class="text-gray-800">{{ $jobPosition->location }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-sm">سطح ارشدیت</p>
-                                    <p class="text-gray-800">میان‌رده</p>
+                                    <p class="text-gray-800">{{ __($jobPosition->level->name) }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-sm">مهارت‌های کلیدی</p>
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="mt-4 bg-gray-50 p-4 rounded-lg">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">درباره شرکت</h3>
                             <p class="text-gray-700 text-sm">
@@ -114,32 +114,42 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Resume Submission Form -->
             <div id="apply-form" class="p-6 bg-gray-50">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">ارسال رزومه</h3>
-                <form>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form action="{{ route('job-position.send_resume', $jobPosition->id) }}" method="POST">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1">نام و نام خانوادگی</label>
-                            <input type="text" id="fullname" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">نام</label>
+                            <input type="text" id="first_name" name="first_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
+
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">نام خانوادگی</label>
+                            <input type="text" id="last_name" name="last_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">ایمیل</label>
-                            <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-7">
                         <div>
                             <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">شماره تماس</label>
-                            <input type="tel" id="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <div>
                             <label for="salary" class="block text-sm font-medium text-gray-700 mb-1">حقوق پیشنهادی (تومان)</label>
-                            <input type="text" id="salary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" id="salary" name="salary" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <div class="md:col-span-2">
                             <label for="resume" class="block text-sm font-medium text-gray-700 mb-1">رزومه (PDF یا Word)</label>
                             <div class="mt-1 flex items-center">
-                                <input type="file" id="resume" class="hidden">
+                                <input type="file" id="resume" name="file" class="hidden">
                                 <label for="resume" class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                                     انتخاب فایل
                                 </label>
