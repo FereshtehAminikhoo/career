@@ -39,10 +39,10 @@
                                         <span class="px-2 py-1 {{ __($job_position->category->name) == 'فنی و مهندسی' ? 'bg-indigo-100 text-indigo-800' : (__($job_position->category->name) == 'منابع انسانی و اداری' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800') }} rounded-full text-xs">{{ __($job_position->category->name) }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">10</div>
+                                        <div class="text-sm text-gray-900">{{ $resumes_count[$job_position->id] ?? 0 }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 {{ $job_position->is_open == 1 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }} rounded-full text-xs">{{ $job_position->is_open ? "باز" : "بسته" }}</span>
+                                        <span class="px-2 py-1 {{ ($job_position->is_open == 1 && ($job_position->expired_at > now())) ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }} rounded-full text-xs">{{ ($job_position->is_open && ($job_position->expired_at > now())) ? "باز" : "بسته" }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-left ltr">{{ \Morilog\Jalali\Jalalian::fromDateTime($job_position->created_at)->format('Y/m/d') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">

@@ -29,10 +29,12 @@ class JobPositionController extends Controller
         $this->jobLevelRepo = $jobLevelRepository;
         $this->statusRepo = $statusRepository;
     }
+
     public function index()
     {
         $job_positions = $this->jobPositionRepo->all();
-        return view('panel.job-position.index', compact("job_positions"));
+        $resumes_count = $this->jobPositionRepo->resumes_count();
+        return view('panel.job-position.index', compact("job_positions", "resumes_count"));
     }
 
     public function create()
